@@ -32,9 +32,14 @@ detect_os() {
 }
 
 OS=$(detect_os)
-SNAPTO_CLI="$PROJECT_ROOT/target/release/snapto"
+
+# Binary paths
 if [ "$OS" = "windows" ]; then
     SNAPTO_CLI="$PROJECT_ROOT/target/release/snapto.exe"
+    SNAPTO_TUI="$PROJECT_ROOT/target/release/snapto-tui.exe"
+else
+    SNAPTO_CLI="$PROJECT_ROOT/target/release/snapto"
+    SNAPTO_TUI="$PROJECT_ROOT/target/release/snapto-tui"
 fi
 
 echo "============================================"
@@ -71,24 +76,42 @@ echo "Flutter version:"
 flutter --version | head -n 1
 echo ""
 
-# Check if SnapTo CLI is built
-if [ ! -f "$SNAPTO_CLI" ]; then
-    warning "SnapTo CLI not found at: $SNAPTO_CLI"
-    echo ""
-    read -p "Build SnapTo CLI now? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        info "Building SnapTo CLI..."
-        cd "$PROJECT_ROOT"
-        cargo build --release
-        success "Build complete!"
+# Check and build Rust binaries automatically
+build_rust_binaries() {
+    if ! command -v cargo &> /dev/null; then
+        warning "Cargo not installed. Rust binaries won't be available."
+        echo "  Install Rust: https://rustup.rs"
         echo ""
-    else
-        warning "Skipping CLI build. Upload functionality may not work."
-        echo ""
+        return 1
     fi
+
+    info "Building Rust binaries (snapto, snapto-tui)..."
+    cd "$PROJECT_ROOT"
+    cargo build --release --bin snapto --bin snapto-tui
+    success "Rust binaries built successfully!"
+    echo ""
+    cd "$FLUTTER_APP"
+    return 0
+}
+
+# Check if Rust binaries exist
+NEED_BUILD=false
+if [ ! -f "$SNAPTO_CLI" ]; then
+    warning "SnapTo CLI not found: $SNAPTO_CLI"
+    NEED_BUILD=true
+fi
+if [ ! -f "$SNAPTO_TUI" ]; then
+    warning "SnapTo TUI not found: $SNAPTO_TUI"
+    NEED_BUILD=true
+fi
+
+if [ "$NEED_BUILD" = true ]; then
+    info "Building Rust binaries automatically..."
+    echo ""
+    build_rust_binaries || warning "Continuing without Rust binaries..."
 else
     success "SnapTo CLI found: $SNAPTO_CLI"
+    success "SnapTo TUI found: $SNAPTO_TUI"
     echo ""
 fi
 
