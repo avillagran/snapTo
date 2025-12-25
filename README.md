@@ -50,7 +50,7 @@ URL copied: https://images.example.com/2024-01-15_a7f3x2.png
 ### From Source (Rust 1.70+)
 
 ```bash
-git clone https://github.com/yourusername/snapto.git
+git clone https://github.com/avillagran/snapto.git
 cd snapto
 cargo install --path crates/snapto-cli
 ```

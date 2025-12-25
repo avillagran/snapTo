@@ -1,28 +1,69 @@
 #!/bin/bash
 
 # SnapTo App Runner Script
-# This script helps you quickly run the SnapTo macOS app
+# Cross-platform script to run the SnapTo Flutter app
 
 set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$SCRIPT_DIR/.."
 FLUTTER_APP="$PROJECT_ROOT/snapto_app"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+info() { echo -e "${BLUE}ℹ${NC} $1"; }
+success() { echo -e "${GREEN}✓${NC} $1"; }
+warning() { echo -e "${YELLOW}⚠${NC} $1"; }
+error() { echo -e "${RED}✗${NC} $1"; }
+
+# Detect OS
+detect_os() {
+    case "$(uname -s)" in
+        Darwin*)  echo "macos" ;;
+        Linux*)   echo "linux" ;;
+        MINGW*|MSYS*|CYGWIN*) echo "windows" ;;
+        *)        echo "unknown" ;;
+    esac
+}
+
+OS=$(detect_os)
 SNAPTO_CLI="$PROJECT_ROOT/target/release/snapto"
+if [ "$OS" = "windows" ]; then
+    SNAPTO_CLI="$PROJECT_ROOT/target/release/snapto.exe"
+fi
 
 echo "============================================"
-echo "  SnapTo macOS App"
+echo "  SnapTo Desktop App"
 echo "============================================"
+echo ""
+
+info "Detected OS: $OS"
 echo ""
 
 # Check if Flutter is installed
 if ! command -v flutter &> /dev/null; then
-    echo "ERROR: Flutter is not installed or not in PATH"
+    error "Flutter is not installed or not in PATH"
     echo ""
     echo "Install Flutter:"
-    echo "  brew install --cask flutter"
-    echo ""
-    echo "Or download from: https://docs.flutter.dev/get-started/install/macos"
+    case "$OS" in
+        macos)
+            echo "  brew install --cask flutter"
+            echo "  Or: https://docs.flutter.dev/get-started/install/macos"
+            ;;
+        linux)
+            echo "  sudo snap install flutter --classic"
+            echo "  Or: https://docs.flutter.dev/get-started/install/linux"
+            ;;
+        windows)
+            echo "  choco install flutter"
+            echo "  Or: https://docs.flutter.dev/get-started/install/windows"
+            ;;
+    esac
     exit 1
 fi
 
@@ -32,40 +73,84 @@ echo ""
 
 # Check if SnapTo CLI is built
 if [ ! -f "$SNAPTO_CLI" ]; then
-    echo "WARNING: SnapTo CLI not found at: $SNAPTO_CLI"
+    warning "SnapTo CLI not found at: $SNAPTO_CLI"
     echo ""
     read -p "Build SnapTo CLI now? (y/n) " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo "Building SnapTo CLI..."
+        info "Building SnapTo CLI..."
         cd "$PROJECT_ROOT"
         cargo build --release
-        echo "Build complete!"
+        success "Build complete!"
         echo ""
     else
-        echo "Skipping CLI build. Upload functionality may not work."
+        warning "Skipping CLI build. Upload functionality may not work."
         echo ""
     fi
 else
-    echo "SnapTo CLI found: $SNAPTO_CLI"
+    success "SnapTo CLI found: $SNAPTO_CLI"
     echo ""
 fi
 
 # Navigate to Flutter app directory
 cd "$FLUTTER_APP"
 
+# Check if platform is configured
+check_platform_configured() {
+    case "$OS" in
+        macos)
+            [ -f "$FLUTTER_APP/macos/Runner.xcworkspace/contents.xcworkspacedata" ] || \
+            [ -d "$FLUTTER_APP/macos/Runner.xcodeproj" ]
+            ;;
+        linux)
+            [ -f "$FLUTTER_APP/linux/CMakeLists.txt" ]
+            ;;
+        windows)
+            [ -f "$FLUTTER_APP/windows/CMakeLists.txt" ]
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+if ! check_platform_configured; then
+    warning "Platform '$OS' is not configured for this Flutter project"
+    info "Configuring $OS platform automatically..."
+    echo ""
+
+    flutter create --platforms="$OS" .
+
+    success "Platform '$OS' configured successfully!"
+    echo ""
+fi
+
 # Check if dependencies are installed
 if [ ! -d "$FLUTTER_APP/.dart_tool" ]; then
-    echo "Installing Flutter dependencies..."
+    info "Installing Flutter dependencies..."
     flutter pub get
     echo ""
 fi
 
 # Run the app
-echo "Starting SnapTo app..."
+info "Starting SnapTo app on $OS..."
 echo "Press 'r' for hot reload, 'R' for hot restart, 'q' to quit"
 echo ""
 echo "============================================"
 echo ""
 
-flutter run -d macos "$@"
+case "$OS" in
+    macos)
+        flutter run -d macos "$@"
+        ;;
+    linux)
+        flutter run -d linux "$@"
+        ;;
+    windows)
+        flutter run -d windows "$@"
+        ;;
+    *)
+        error "Unsupported OS: $OS"
+        exit 1
+        ;;
+esac

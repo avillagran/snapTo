@@ -10,7 +10,7 @@ CLAUDE.md
 # =============================================================================
 /target/
 **/*.rs.bk
-Cargo.lock
+# Note: Cargo.lock IS committed for applications (not libraries)
 
 # =============================================================================
 # Flutter
