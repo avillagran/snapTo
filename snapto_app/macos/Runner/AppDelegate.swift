@@ -1,7 +1,7 @@
 import Cocoa
 import FlutterMacOS
 
-@NSApplicationMain
+@main
 class AppDelegate: FlutterAppDelegate {
   override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
     // Keep the app running even when the window is closed
