@@ -1,0 +1,60 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/snapto-core",
+    "crates/snapto-cli",
+    "crates/snapto-tui",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["SnapTo Contributors"]
+license = "MIT"
+repository = "https://github.com/user/snapto"
+
+[workspace.dependencies]
+# Core dependencies
+tokio = { version = "1.35", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+thiserror = "1.0"
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Clipboard
+arboard = "3.4"
+
+# SSH/SFTP
+ssh2 = "0.9"
+
+# Image processing
+image = "0.25"
+
+# CLI
+clap = { version = "4.4", features = ["derive"] }
+
+# TUI
+ratatui = "0.28"
+crossterm = "0.28"
+
+# Database
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+# Security
+keyring = "3"
+aes-gcm = "0.10"
+rand = "0.8"
+argon2 = "0.5"
+base64 = "0.22"
+
+# Utilities
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.6", features = ["v4"] }
+directories = "5.0"
+shellexpand = "3.1"
+
+# Testing
+tempfile = "3.8"

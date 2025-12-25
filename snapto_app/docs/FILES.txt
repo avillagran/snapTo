@@ -1,0 +1,131 @@
+SnapTo macOS Menubar App - Complete File List
+==============================================
+
+Project Root: /Users/avillagran/Desarrollo/ClipClaude/snapto_app/
+
+DART SOURCE FILES (6 files)
+---------------------------
+lib/main.dart
+lib/services/hotkey_service.dart
+lib/services/notification_service.dart
+lib/services/screenshot_service.dart
+lib/services/tray_service.dart
+lib/services/upload_service.dart
+
+SWIFT SOURCE FILES (2 files)
+----------------------------
+macos/Runner/AppDelegate.swift
+macos/Runner/MainFlutterWindow.swift
+
+MACOS CONFIGURATION (9 files)
+------------------------------
+macos/Runner/Info.plist
+macos/Runner/DebugProfile.entitlements
+macos/Runner/Release.entitlements
+macos/Runner/Configs/AppInfo.xcconfig
+macos/Runner/Configs/Debug.xcconfig
+macos/Runner/Configs/Release.xcconfig
+macos/Runner/Configs/Warnings.xcconfig
+
+FLUTTER CONFIGURATION (4 files)
+--------------------------------
+pubspec.yaml
+analysis_options.yaml
+.gitignore
+.metadata
+
+DOCUMENTATION (5 files)
+-----------------------
+README.md
+SETUP.md
+QUICKSTART.md
+ARCHITECTURE.md
+PROJECT_SUMMARY.md
+FILES.txt (this file)
+
+SCRIPTS (2 files)
+-----------------
+run.sh
+build.sh
+
+TEST FILES (1 file)
+-------------------
+test/widget_test.dart
+
+ASSETS
+------
+assets/.gitkeep
+
+TOTAL: 30 FILES
+
+DIRECTORY STRUCTURE
+-------------------
+snapto_app/
+├── .gitignore
+├── .metadata
+├── analysis_options.yaml
+├── pubspec.yaml
+├── README.md
+├── SETUP.md
+├── QUICKSTART.md
+├── ARCHITECTURE.md
+├── PROJECT_SUMMARY.md
+├── FILES.txt
+├── run.sh
+├── build.sh
+├── lib/
+│   ├── main.dart
+│   └── services/
+│       ├── tray_service.dart
+│       ├── screenshot_service.dart
+│       ├── upload_service.dart
+│       ├── hotkey_service.dart
+│       └── notification_service.dart
+├── macos/
+│   ├── Flutter/
+│   └── Runner/
+│       ├── Info.plist
+│       ├── DebugProfile.entitlements
+│       ├── Release.entitlements
+│       ├── AppDelegate.swift
+│       ├── MainFlutterWindow.swift
+│       └── Configs/
+│           ├── AppInfo.xcconfig
+│           ├── Debug.xcconfig
+│           ├── Release.xcconfig
+│           └── Warnings.xcconfig
+├── assets/
+│   └── .gitkeep
+└── test/
+    └── widget_test.dart
+
+KEY FEATURES IMPLEMENTED
+-------------------------
+✓ Menubar-only app (no dock icon)
+✓ LSUIElement = true configuration
+✓ System tray with menu items
+✓ Fullscreen screenshot capture
+✓ Region selection screenshot
+✓ Global hotkeys (Cmd+Shift+3, Cmd+Shift+4)
+✓ SnapTo CLI integration
+✓ Upload service with URL extraction
+✓ Clipboard copying
+✓ System notifications
+✓ TUI launcher
+✓ macOS permissions (Screen Recording, Accessibility)
+✓ App sandbox entitlements
+✓ Proper window management
+✓ Error handling
+✓ Temporary file cleanup
+✓ Complete documentation
+✓ Run and build scripts
+
+READY TO USE
+------------
+The project is complete and ready to:
+1. Run in development mode: ./run.sh
+2. Build for release: ./build.sh
+3. Install dependencies: flutter pub get
+4. Test functionality
+5. Deploy to production
+

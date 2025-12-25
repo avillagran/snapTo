@@ -1,0 +1,40 @@
+[package]
+name = "snapto-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "snapto"
+path = "src/main.rs"
+
+[dependencies]
+snapto-core = { path = "../snapto-core" }
+
+# Async runtime
+tokio = { workspace = true }
+
+# CLI framework
+clap = { workspace = true }
+
+# Error handling
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Terminal colors and formatting
+colored = "2.1"
+indicatif = "0.17"
+
+# Utilities
+chrono = { workspace = true }
+directories = { workspace = true }

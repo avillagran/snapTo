@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- App Sandbox -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+
+	<!-- Network access for uploading screenshots -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+
+	<!-- File access for reading/writing screenshots -->
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+
+	<!-- Temporary folder access -->
+	<key>com.apple.security.temporary-exception.files.absolute-path.read-write</key>
+	<array>
+		<string>/tmp/</string>
+		<string>/var/folders/</string>
+	</array>
+
+	<!-- Allow execution of SnapTo CLI -->
+	<key>com.apple.security.temporary-exception.apple-events</key>
+	<array>
+		<string>com.apple.Terminal</string>
+	</array>
+
+	<!-- Screen recording permission -->
+	<key>com.apple.security.device.camera</key>
+	<false/>
+
+	<!-- Disable library validation for development -->
+	<key>com.apple.security.cs.disable-library-validation</key>
+	<true/>
+
+	<!-- Allow dyld environment variables -->
+	<key>com.apple.security.cs.allow-dyld-environment-variables</key>
+	<true/>
+</dict>
+</plist>

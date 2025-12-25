@@ -1,0 +1,51 @@
+[package]
+name = "snapto-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+# Workspace dependencies
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+toml = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+
+# Clipboard
+arboard = { workspace = true }
+
+# SSH/SFTP
+ssh2 = { workspace = true }
+
+# Image processing
+image = { workspace = true }
+
+# Utilities
+chrono = { workspace = true }
+uuid = { workspace = true }
+directories = { workspace = true }
+shellexpand = { workspace = true }
+
+# Database
+rusqlite = { workspace = true }
+
+# Security
+keyring = { workspace = true }
+aes-gcm = { workspace = true }
+rand = { workspace = true }
+
+# Additional dependencies for encryption
+argon2 = "0.5"
+base64 = "0.22"
+
+# Async trait support
+async-trait = "0.1"
+
+[dev-dependencies]
+tokio-test = "0.4"
+tempfile = "3.8"
