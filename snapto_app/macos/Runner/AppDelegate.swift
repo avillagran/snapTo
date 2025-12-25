@@ -13,4 +13,8 @@ class AppDelegate: FlutterAppDelegate {
     // Hide the app from dock if LSUIElement is not working
     NSApp.setActivationPolicy(.accessory)
   }
+
+  override func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
+    return true
+  }
 }

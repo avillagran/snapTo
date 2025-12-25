@@ -29,19 +29,19 @@ class TrayService extends TrayListener {
   }
 
   Future<void> _setTrayIcon() async {
-    // Try to load icon from assets, fallback to system icon if not found
-    try {
-      await trayManager.setIcon(
-        'assets/tray_icon.png',
-        isTemplate: true,
-      );
-    } catch (e) {
-      debugPrint('Failed to load tray icon from assets: $e');
-      // Use a default system appearance
-      await trayManager.setIcon(
-        '',
-        isTemplate: true,
-      );
+    // On macOS, we can use a system symbol or skip if no icon
+    // The tray will show with default appearance
+    if (Platform.isMacOS) {
+      // Use NSImage system symbol - camera icon
+      try {
+        await trayManager.setIcon(
+          'assets/tray_icon.png',
+          isTemplate: true,
+        );
+      } catch (e) {
+        debugPrint('Failed to load tray icon: $e');
+        // On macOS, tray still works without icon (shows app name)
+      }
     }
   }
 

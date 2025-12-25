@@ -31,12 +31,14 @@ class UploadService {
 
     if (Platform.isMacOS) {
       // macOS: Check app bundle first
-      // Production: /path/to/SnapTo.app/Contents/MacOS/snapto_app
-      // Resources at: /path/to/SnapTo.app/Contents/Resources/
-      final bundlePath = execPath.replaceAll('/MacOS/snapto_app', '/Resources/$binaryName');
-      debugPrint('Checking macOS bundle path: $bundlePath');
-      if (await File(bundlePath).exists()) {
-        return bundlePath;
+      // Executable: /path/to/App.app/Contents/MacOS/<executable>
+      // Resources:  /path/to/App.app/Contents/Resources/
+      final macosDir = File(execPath).parent.path; // .../Contents/MacOS
+      final contentsDir = Directory(macosDir).parent.path; // .../Contents
+      final resourcesPath = '$contentsDir/Resources/$binaryName';
+      debugPrint('Checking macOS bundle path: $resourcesPath');
+      if (await File(resourcesPath).exists()) {
+        return resourcesPath;
       }
     } else if (Platform.isWindows) {
       // Windows: Check next to executable
